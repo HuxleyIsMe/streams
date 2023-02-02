@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { userHoldingsController } from "./user-holdings.controller";
+const Router = require("express");
+const userHoldingsController = require("./user-holdings.controller.js");
 
 const userHoldingsRouter = Router();
 
