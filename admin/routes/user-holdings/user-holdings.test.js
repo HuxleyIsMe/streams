@@ -12,6 +12,7 @@ describe("user-holdings", () => {
     const spy = jest.spyOn(request, "get");
     controller.userHoldingsController();
     expect(spy).toHaveBeenCalledWith(expect.stringContaining(`investments`));
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining(`companies`));
   });
 
   xit("sends a valid JSON file to the /export route of investments", () => {
@@ -58,40 +59,44 @@ describe("user-holdings", () => {
       const result = controller.convertInvestmentsToRows(dummyData);
       expect(result).toMatchInlineSnapshot(`
 [
-  {
-    "date": "2020-01-01",
-    "firstName": "Billy",
-    "holding": "2",
-    "lastName": "Bob",
-    "userId": "1",
-    "value": 1400,
-  },
-  {
-    "date": "2020-01-01",
-    "firstName": "Sheila",
-    "holding": "1",
-    "lastName": "Aussie",
-    "userId": "2",
-    "value": 10000,
-  },
-  {
-    "date": "2020-01-01",
-    "firstName": "Sheila",
-    "holding": "2",
-    "lastName": "Aussie",
-    "userId": "2",
-    "value": 10000,
-  },
-  {
-    "date": "2020-02-01",
-    "firstName": "Billy",
-    "holding": "2",
-    "lastName": "Bob",
-    "userId": "1",
-    "value": 1300,
-  },
+  [
+    "1",
+    "Billy",
+    "Bob",
+    "2020-01-01",
+    "2",
+    1400,
+  ],
+  [
+    "2",
+    "Sheila",
+    "Aussie",
+    "2020-01-01",
+    "1",
+    10000,
+  ],
+  [
+    "2",
+    "Sheila",
+    "Aussie",
+    "2020-01-01",
+    "2",
+    10000,
+  ],
+  [
+    "1",
+    "Billy",
+    "Bob",
+    "2020-02-01",
+    "2",
+    1300,
+  ],
 ]
 `);
+    });
+
+    xit("converts the holding companies to a library", () => {
+      expect(controller.holdingCiompaniesLib);
     });
   });
 });
