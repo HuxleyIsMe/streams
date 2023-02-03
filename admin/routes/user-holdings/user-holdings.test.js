@@ -1,6 +1,6 @@
-const controller = require("./user-holdings.controller.js");
-const request = require("request");
-const config = require("../../config/default.json");
+import controller from "./user-holdings-controller.js";
+import request from "request";
+import config from "../../config/default.json" assert { type: "json" };
 
 describe("user-holdings", () => {
   afterEach(() => {
@@ -95,8 +95,10 @@ describe("user-holdings", () => {
 `);
     });
 
-    xit("converts the holding companies to a library", () => {
-      expect(controller.holdingCiompaniesLib);
+    it("converts the holding companies to a library", () => {
+      expect(
+        controller.holdingCompaniesLib(DUMMY_HOLDING_COMPANIES)
+      ).toMatchInlineSnapshot();
     });
   });
 });
