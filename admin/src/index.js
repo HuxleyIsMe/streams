@@ -1,8 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import config from "config";
-import request from "request";
-import { hello } from "../routes/user-holdings/test.js";
+import axios from "axios";
 import { userHoldingsRouter } from "../routes/user-holdings/user-holdings-route.js";
 
 const app = express();
@@ -13,7 +12,7 @@ app.use(userHoldingsRouter);
 
 app.get("/investments/:id", (req, res) => {
   const { id } = req.params;
-  request.get(
+  axios.get(
     `${config.investmentsServiceUrl}/investments/${id}`,
     (e, r, investments) => {
       if (e) {

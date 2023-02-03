@@ -1,5 +1,5 @@
 import controller from "./user-holdings-controller.js";
-import request from "request";
+import axios from "axios";
 import config from "../../config/default.json" assert { type: "json" };
 
 describe("user-holdings", () => {
@@ -9,14 +9,14 @@ describe("user-holdings", () => {
   });
 
   it("gets a list of investments for the user", () => {
-    const spy = jest.spyOn(request, "get");
+    const spy = jest.spyOn(axios, "get");
     controller.userHoldingsController();
     expect(spy).toHaveBeenCalledWith(expect.stringContaining(`investments`));
     expect(spy).toHaveBeenCalledWith(expect.stringContaining(`companies`));
   });
 
   xit("sends a valid JSON file to the /export route of investments", () => {
-    const spy = jest.spyOn(request, "post");
+    const spy = jest.spyOn(axios, "post");
 
     controller.userHoldingsController();
     expect(spy).toHaveBeenCalledWith("/exports");

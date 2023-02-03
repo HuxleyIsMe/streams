@@ -1,5 +1,5 @@
 import config from "../../config/default.json" assert { type: "json" };
-import request from "request";
+import axios from "axios";
 
 const calculateHoldingValue = (investmentTotal, investmentPercentage) =>
   investmentTotal * investmentPercentage;
@@ -26,14 +26,16 @@ export const convertInvestmentsToRows = (investments) =>
 export const userHoldingsController = async (req, res, next) => {
   // its quite heavy to get all the holdings... however in this instance as theres only 3
   // it is fine
-  const [allInvestments, allHoldings] = await Promise.all([
-    request.get(`${config.investmentsServiceUrl}/investments`),
-    request.get(`${config.financialCompaniesServiceUrl}/companies`),
+  const [{ data: allInvestments }, { data: allHoldings }] = await Promise.all([
+    axios.get(`${config.investmentsServiceUrl}/investments`),
+    axios.get(`${config.financialCompaniesServiceUrl}/companies`),
   ]);
+
+  console.log({ allInvestments });
 
   const investmentsCSV = convertInvestmentsToRows(allInvestments);
 
-  request.post(`http://localhost:8081/exports`, {
+  axios.post(`http://localhost:8081/exports`, {
     holdings: investmentsCSV,
   });
 
