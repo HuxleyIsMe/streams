@@ -6,6 +6,7 @@ import { userHoldingsRouter } from "../routes/user-holdings/user-holdings-route.
 
 const app = express();
 
+// change 1.c
 app.use(bodyParser.json({ limit: "10mb" }));
 
 app.use(userHoldingsRouter);
