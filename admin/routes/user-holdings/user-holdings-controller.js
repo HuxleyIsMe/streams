@@ -4,10 +4,21 @@ import axios from "axios";
 const calculateHoldingValue = (investmentTotal, investmentPercentage) =>
   investmentTotal * investmentPercentage;
 
+export const convertHoldersToLib = (holders) =>
+  holders.reduce(
+    acc,
+    (curr) => {
+      if (!acc[curr.id]) {
+        acc[curr.id] = curr.name;
+      }
+      return acc;
+    },
+    {}
+  );
+
 export const convertInvestmentsToRows = (investments) =>
   investments.reduce((acc, curr) => {
     curr.holdings.forEach((holding) => {
-      // csv means this should be columns
       acc.push([
         curr.userId,
         curr.firstName,

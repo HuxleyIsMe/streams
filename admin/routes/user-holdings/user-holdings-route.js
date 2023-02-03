@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { userHoldingsController } from "./user-holdings-controller.js";
+import { userHoldingsController } from "./user-holdings-controller.mjs";
 
 const userHoldingsRouter = Router();
 

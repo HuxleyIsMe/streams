@@ -1,6 +1,5 @@
-import controller from "./user-holdings-controller.js";
+import controller from "./user-holdings-controller.mjs";
 import axios from "axios";
-import config from "../../config/default.json" assert { type: "json" };
 
 describe("user-holdings", () => {
   afterEach(() => {
