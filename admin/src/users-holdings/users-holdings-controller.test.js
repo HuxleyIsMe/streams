@@ -2,7 +2,9 @@ const axios = require("axios");
 const { usersHoldingsController } = require("./users-holdings-controller");
 const config = require("../../config/default.json");
 const { PassThrough } = require("stream");
+const { streamAndTransformInvestments } = require("./investments-stream");
 
+jest.mock("./investments-stream");
 jest.mock("axios");
 
 const res = {};
@@ -41,6 +43,18 @@ describe("users holdings controller", () => {
     await usersHoldingsController({}, res, mockNext);
     expect(mockAxios).toHaveBeenCalledWith(
       `${config.investmentsServiceUrl}/investments`
+    );
+  });
+
+  it.todo("calls the investments stream method");
+
+  it.only("posts the created JSON file to the exports endpoint in the investment services", async () => {
+    axios.get.mockResolvedValue({ data: [{ id: 1, name: "hi" }] });
+    const mockAxios = jest.spyOn(axios, "post");
+    expect(mockAxios).not.toHaveBeenCalled();
+    await usersHoldingsController({}, res, mockNext);
+    expect(mockAxios).toHaveBeenCalledWith(
+      `${config.investmentsServiceUrl}/investments/exports`
     );
   });
 });

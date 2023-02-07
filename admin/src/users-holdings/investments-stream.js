@@ -12,7 +12,7 @@ const streamAndTransformInvestments = async ({ holdersLookup }) => {
     }
   );
 
-  const CSVFile = fs.createWriteStream("./transformedData.txt");
+  const CSVFile = fs.createWriteStream("./generated-CSVs/users-holdings.txt");
 
   const CSVData = new Transform({
     transform(chunk, __, callback) {
