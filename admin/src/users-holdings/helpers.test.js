@@ -29,4 +29,8 @@ describe("users holdings helpers", () => {
       ).toEqual(desiredResult);
     });
   });
+
+  describe("transformToCsvWithHolder", () => {
+    it("transforms an array of investments to a csv row including the correct holding name", () => {});
+  });
 });

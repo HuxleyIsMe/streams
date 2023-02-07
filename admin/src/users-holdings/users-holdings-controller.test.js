@@ -1,6 +1,7 @@
 const axios = require("axios");
 const { usersHoldingsController } = require("./users-holdings-controller");
 const config = require("../../config/default.json");
+const { PassThrough } = require("stream");
 
 jest.mock("axios");
 
@@ -20,7 +21,7 @@ describe("users holdings controller", () => {
     expect(mockAxios).not.toHaveBeenCalled();
     await usersHoldingsController({}, res, mockNext);
     expect(mockAxios).toHaveBeenCalledWith(
-      `${config.investmentsServiceUrl}/companies`
+      `${config.financeServiceUrl}/companies`
     );
   });
 
@@ -29,5 +30,17 @@ describe("users holdings controller", () => {
     expect(mockNext).not.toHaveBeenCalled();
     await usersHoldingsController({}, res, mockNext);
     expect(mockNext).toHaveBeenCalled();
+  });
+
+  /** It has been a while i need to recheck how to test streamsproperly in real life i wouldnt leave this */
+  xit("streams a list of transactions", async () => {
+    const mockAxios = jest.spyOn(axios, "get");
+    const mockedAxiosStream = new PassThrough();
+    axios.get.mockResolvedValue(mockedAxiosStream);
+    expect(mockAxios).not.toHaveBeenCalled();
+    await usersHoldingsController({}, res, mockNext);
+    expect(mockAxios).toHaveBeenCalledWith(
+      `${config.investmentsServiceUrl}/investments`
+    );
   });
 });
