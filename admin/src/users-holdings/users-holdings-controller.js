@@ -1,4 +1,5 @@
 const axios = require("axios");
+const fs = require("fs");
 const config = require("../../config/default.json");
 const { convertToLookup } = require("./helpers");
 const { streamAndTransformInvestments } = require("./investments-stream");
@@ -12,7 +13,6 @@ const usersHoldingsController = async (req, res, next) => {
     // /** in an ideal world this service would have its own copy of the data so it wouldnt have to do this every time and could simply store it
     //  * however this would require moving the architecture to an event bus which is out of scope for this test
     //  */
-
     const holdersLookup = convertToLookup({
       arrayOfObjects: holdings,
       key: "id",
@@ -20,10 +20,13 @@ const usersHoldingsController = async (req, res, next) => {
     });
 
     await streamAndTransformInvestments({ holdersLookup });
-    await axios.post(`${config.investmentsServiceUrl}/investments/exports`);
+    const generateCSV = fs.readFileSync(`${__dirname}/generatedCSV`);
+    const parsedCSV = JSON.parse(generateCSV.toString().trim());
+    await axios.post(`${config.investmentsServiceUrl}/investments/export`, {
+      data: parsedCSV,
+    });
 
     res.send({ msg: "report made!" });
-    // now retrieve the file and send it
   } catch (err) {
     next(err);
   }

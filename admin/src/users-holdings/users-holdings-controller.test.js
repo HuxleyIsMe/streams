@@ -48,13 +48,14 @@ describe("users holdings controller", () => {
 
   it.todo("calls the investments stream method");
 
-  it.only("posts the created JSON file to the exports endpoint in the investment services", async () => {
+  it("posts the created JSON file to the exports endpoint in the investment services", async () => {
     axios.get.mockResolvedValue({ data: [{ id: 1, name: "hi" }] });
     const mockAxios = jest.spyOn(axios, "post");
     expect(mockAxios).not.toHaveBeenCalled();
     await usersHoldingsController({}, res, mockNext);
     expect(mockAxios).toHaveBeenCalledWith(
-      `${config.investmentsServiceUrl}/investments/exports`
+      `${config.investmentsServiceUrl}/investments/export`,
+      expect.any(Object)
     );
   });
 });
