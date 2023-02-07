@@ -6,6 +6,7 @@ Notes
 - Testing suite is not where i want, im a little rusty on older require import syntax and this led to issues with mocking with Jest. I could have installed babel to compile down the code however this would have been a big change.
 - Also I need to revise how to test streams :?
 - i started a TTL feature to try and optimize this heavy endpoint, its not quite finished it should handle when a file is not there and clean then data on start of the server.
+- There are two branches, the first is the original attempt that took two hours but i was unhappy withit as i knew i could use streams and the suite stopped working, again due to the difference in module imports between ES6 and 5.
 
 Desicions:
 
@@ -13,4 +14,5 @@ Desicions:
 
 - ideally the architecture of the services should work with an event bus so they can store the data they want as the other services develop, this will reduce API calls to eachother and make the service function quicker.
 
-`yarn develop`
+# to run!
+`yarn & yarn develop`
