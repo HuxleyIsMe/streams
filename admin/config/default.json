@@ -2,5 +2,6 @@
   "port": 8083,
   "investmentsServiceUrl": "http://localhost:8081",
   "financeServiceUrl": "http://localhost:8082",
-  "generatedCSV": "generatedCSV"
+  "generatedCSV": "generatedCSV",
+  "TTLInMS": 3000
 }

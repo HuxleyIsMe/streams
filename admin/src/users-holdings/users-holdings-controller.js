@@ -1,32 +1,39 @@
 const axios = require("axios");
 const fs = require("fs");
 const config = require("../../config/default.json");
-const { convertToLookup } = require("./helpers");
+const { convertToLookup, readFile, hasValidCSV } = require("./helpers");
 const { streamAndTransformInvestments } = require("./investments-stream");
 
-const usersHoldingsController = async (req, res, next) => {
+const usersHoldingsController = async (__, res, next) => {
   try {
-    const { data: holdings } = await axios.get(
-      `${config.financeServiceUrl}/companies`
-    );
+    // this can be its own function now
 
-    // /** in an ideal world this service would have its own copy of the data so it wouldnt have to do this every time and could simply store it
-    //  * however this would require moving the architecture to an event bus which is out of scope for this test
-    //  */
-    const holdersLookup = convertToLookup({
-      arrayOfObjects: holdings,
-      key: "id",
-      value: "name",
-    });
+    if (!hasValidCSV()) {
+      const { data: holdings } = await axios.get(
+        `${config.financeServiceUrl}/companies`
+      );
 
-    await streamAndTransformInvestments({ holdersLookup });
-    const generateCSV = fs.readFileSync(`${__dirname}/generatedCSV`);
-    const parsedCSV = JSON.parse(generateCSV.toString().trim());
+      // /** in an ideal world this service would have its own copy of the data so it wouldnt have to do this every time and could simply store it
+      //  * however this would require moving the architecture to an event bus which is out of scope for this test
+      //  */
+      const holdersLookup = convertToLookup({
+        arrayOfObjects: holdings,
+        key: "id",
+        value: "name",
+      });
+
+      await streamAndTransformInvestments({ holdersLookup });
+
+      fs.writeFileSync(`${__dirname}/timeStamp`, String(Date.now()));
+    }
+
+    const CSV = readFile(`${__dirname}/${config.generatedCSV}`);
+
     await axios.post(`${config.investmentsServiceUrl}/investments/export`, {
-      data: parsedCSV,
+      data: CSV,
     });
 
-    res.send({ msg: "report made!" });
+    res.send({ msg: "report made!" }).status(203);
   } catch (err) {
     next(err);
   }

@@ -25,6 +25,7 @@ const streamAndTransformInvestments = async ({ holdersLookup }) => {
       );
     },
   });
+
   investmentsStream
     .pipe(CSVData)
     .on("error", (e) => {
