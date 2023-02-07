@@ -69,10 +69,11 @@ describe("users holdings helpers", () => {
 
       expect(
         transformToCSVWithHolder({
-          investments: mockData,
-          holdingLookup: mockedLib,
+          // for the stream must have as a string
+          investments: JSON.stringify(mockData),
+          holdersLookup: mockedLib,
         })
-      ).toEqual(desired);
+      ).toEqual(JSON.stringify(desired));
     });
   });
 });
